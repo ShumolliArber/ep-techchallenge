@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Http\Requests\ClientRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ClientsController extends Controller
@@ -21,9 +22,29 @@ class ClientsController extends Controller
         return view('clients.create');
     }
 
-    public function show(Client $client)
+    public function show(Request $request, Client $client)
     {
-        return view('clients.show', ['client' => $client->load('bookings')]);
+        $clientWithBookings = $client->load(['bookings']);
+
+        if ($request->ajax()) {
+            $filter = $request->get('filter');
+
+            if ($filter === 'future') {
+                $clientWithBookings = $client->load(['bookings' => function ($query) {
+                    $query->where('start', '>', now());
+                }]);
+            }
+
+            if ( $filter === 'past') {
+                $clientWithBookings = $client->load(['bookings' => function ($query) {
+                    $query->where('end', '<', now());
+                }]);
+            }
+
+            return response()->json($clientWithBookings);
+        }
+
+        return view('clients.show', ['client' => $clientWithBookings]);
     }
 
     public function store(ClientRequest $request): Client

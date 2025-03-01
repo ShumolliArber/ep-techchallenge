@@ -37,8 +37,14 @@
 
                 <!-- Bookings -->
                 <div class="bg-white rounded p-4" v-if="currentTab == 'bookings'">
-                    <h3 class="mb-3">List of client bookings</h3>
-
+                    <div class="flex justify-content-between">
+                        <h3 class="mb-3">List of client bookings</h3>
+                        <select v-model="filter" @change='filterBookings'>
+                            <option selected value="all">All bookings</option>
+                            <option value="future">Future bookings only</option>
+                            <option value="past">Past bookings</option>
+                        </select>
+                    </div>
                     <template v-if="client.bookings && client.bookings.length > 0">
                         <table>
                             <thead>
@@ -88,6 +94,7 @@ export default {
     data() {
         return {
             currentTab: 'bookings',
+            filter: 'all'
         }
     },
 
@@ -98,6 +105,15 @@ export default {
 
         deleteBooking(booking) {
             axios.delete(`/bookings/${booking.id}`);
+        },
+
+        async filterBookings() {
+            try {
+                const response = await axios.get(`${location.pathname.split('/')[2]}?filter=${this.filter}`)
+                this.client = response.data
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 }
