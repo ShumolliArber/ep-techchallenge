@@ -3,17 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Requests\ClientPostRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\View\View;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
-        $clients = Client::all();
-
-        foreach ($clients as $client) {
-            $client->append('bookings_count');
-        }
+        $clients = Client::withCount('bookings')->whereUserId(auth()->id())->get();
 
         return view('clients.index', ['clients' => $clients]);
     }
@@ -28,18 +27,9 @@ class ClientsController extends Controller
         return view('clients.show', ['client' => $client->load('bookings')]);
     }
 
-    public function store(Request $request)
+    public function store(ClientPostRequest $request): Client
     {
-        $client = new Client;
-        $client->name = $request->get('name');
-        $client->email = $request->get('email');
-        $client->phone = $request->get('phone');
-        $client->adress = $request->get('adress');
-        $client->city = $request->get('city');
-        $client->postcode = $request->get('postcode');
-        $client->save();
-
-        return $client;
+        return  auth()->user()->clients()->create($request->all());
     }
 
     public function destroy($client)
