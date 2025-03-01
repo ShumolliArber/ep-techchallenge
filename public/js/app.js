@@ -1962,6 +1962,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientForm',
@@ -1974,13 +1977,22 @@ __webpack_require__.r(__webpack_exports__);
         address: '',
         city: '',
         postcode: ''
-      }
+      },
+      errors: {}
     };
   },
   methods: {
     storeClient: function storeClient() {
+      var _this = this;
+
       axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/clients', this.client).then(function (data) {
         window.location.href = data.data.url;
+      })["catch"](function (error) {
+        if (error.response.status === 422) {
+          _this.errors = error.response.data.errors;
+        } else {
+          console.error('Something bad happened', error);
+        }
       });
     }
   }
@@ -38680,7 +38692,13 @@ var render = function() {
               _vm.$set(_vm.client, "name", $event.target.value)
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _vm.errors.name
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.name[0]))
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
@@ -38706,7 +38724,13 @@ var render = function() {
               _vm.$set(_vm.client, "email", $event.target.value)
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _vm.errors.email
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.email[0]))
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
@@ -38732,7 +38756,13 @@ var render = function() {
               _vm.$set(_vm.client, "phone", $event.target.value)
             }
           }
-        })
+        }),
+        _vm._v(" "),
+        _vm.errors.phone
+          ? _c("span", { staticClass: "text-red-600" }, [
+              _vm._v(_vm._s(_vm.errors.email[0]))
+            ])
+          : _vm._e()
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [

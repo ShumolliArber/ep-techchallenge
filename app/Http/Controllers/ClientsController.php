@@ -30,7 +30,14 @@ class ClientsController extends Controller
 
     public function store(ClientPostRequest $request): Client
     {
-        return auth()->user()->clients()->create($request->all());
+        return auth()->user()->clients()->create([
+            'name' => $request->get('name'),
+            'email' => $request->get('email'),
+            'phone' => $request->get('phone'),
+            'address' => $request->get('address'),
+            'city' => $request->get('city'),
+            'postcode' => $request->get('postcode'),
+        ]);
     }
 
     public function destroy(Client $client): JsonResponse

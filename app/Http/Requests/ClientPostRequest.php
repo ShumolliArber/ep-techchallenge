@@ -21,10 +21,12 @@ class ClientPostRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|max:190',
+            'email' => 'nullable|email:strict,dns,filter|required_without:phone',
+            'phone' => 'nullable|regex:/^[\d\s\+]+$/|required_without:email',
         ];
     }
 }
