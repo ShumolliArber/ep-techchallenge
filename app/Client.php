@@ -18,10 +18,6 @@ class Client extends Model
         'postcode',
     ];
 
-    protected $appends = [
-        'url',
-    ];
-
     public function bookings(): HasMany
     {
         return $this->hasMany(Booking::class)->orderByDesc('start');
@@ -30,15 +26,5 @@ class Client extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function getBookingsCountAttribute()
-    {
-        return $this->bookings->count();
-    }
-
-    public function getUrlAttribute()
-    {
-        return "/clients/" . $this->id;
     }
 }
