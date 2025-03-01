@@ -8,7 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class ClientsController extends Controller
+class ClientController extends Controller
 {
     public function index(): View
     {
@@ -17,7 +17,7 @@ class ClientsController extends Controller
         return view('clients.index', ['clients' => $clients]);
     }
 
-    public function create()
+    public function create(): View
     {
         return view('clients.create');
     }
@@ -30,15 +30,19 @@ class ClientsController extends Controller
             $filter = $request->get('filter');
 
             if ($filter === 'future') {
-                $clientWithBookings = $client->load(['bookings' => function ($query) {
-                    $query->where('start', '>', now());
-                }]);
+                $clientWithBookings = $client->load([
+                    'bookings' => function ($query) {
+                        $query->where('start', '>', now());
+                    }
+                ]);
             }
 
-            if ( $filter === 'past') {
-                $clientWithBookings = $client->load(['bookings' => function ($query) {
-                    $query->where('end', '<', now());
-                }]);
+            if ($filter === 'past') {
+                $clientWithBookings = $client->load([
+                    'bookings' => function ($query) {
+                        $query->where('end', '<', now());
+                    }
+                ]);
             }
 
             return response()->json($clientWithBookings);
