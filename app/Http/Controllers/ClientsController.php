@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\Http\Requests\ClientPostRequest;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -29,13 +30,17 @@ class ClientsController extends Controller
 
     public function store(ClientPostRequest $request): Client
     {
-        return  auth()->user()->clients()->create($request->all());
+        return auth()->user()->clients()->create($request->all());
     }
 
-    public function destroy($client)
+    public function destroy(Client $client): JsonResponse
     {
-        Client::where('id', $client)->delete();
+        if ($client->user_id !== auth()->id()) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
 
-        return 'Deleted';
+        $client->delete();
+
+        return response()->json(['message' => 'Client deleted successfully']);
     }
 }
