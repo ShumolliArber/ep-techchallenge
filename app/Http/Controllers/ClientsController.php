@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Client;
-use App\Http\Requests\ClientPostRequest;
+use App\Http\Requests\ClientRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class ClientsController extends Controller
@@ -28,7 +26,7 @@ class ClientsController extends Controller
         return view('clients.show', ['client' => $client->load('bookings')]);
     }
 
-    public function store(ClientPostRequest $request): Client
+    public function store(ClientRequest $request): Client
     {
         return auth()->user()->clients()->create([
             'name' => $request->get('name'),
