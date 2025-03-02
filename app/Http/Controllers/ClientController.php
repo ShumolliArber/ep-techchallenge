@@ -12,7 +12,7 @@ class ClientController extends Controller
 {
     public function index(): View
     {
-        $clients = Client::withCount('bookings')->whereUserId(auth()->id())->get();
+        $clients = Client::withCount(['bookings'])->whereUserId(auth()->id())->get();
 
         return view('clients.index', ['clients' => $clients]);
     }
