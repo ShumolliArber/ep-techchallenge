@@ -51,7 +51,7 @@
                             <option value="past">Past bookings</option>
                         </select>
                     </div>
-                    <template v-if="client.bookings && client.bookings.length > 0">
+                    <template v-if="bookings && bookings.length > 0">
                         <table>
                             <thead>
                             <tr>
@@ -61,7 +61,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="booking in client.bookings" :key="booking.id">
+                            <tr v-for="booking in bookings" :key="booking.id">
                                 <td>{{ booking.start }} to {{ booking.end }}</td>
                                 <td>{{ booking.notes }}</td>
                                 <td>
@@ -76,7 +76,6 @@
                     <template v-else>
                         <p class="text-center">The client has no bookings.</p>
                     </template>
-
                 </div>
 
                 <!-- Journals -->
@@ -124,6 +123,10 @@ export default {
 
     props: ['client'],
 
+    mounted() {
+        this.bookings = this.client.bookings
+    },
+
     computed: {
         getClientId() {
             return `${location.pathname.split('/')[2]}`
@@ -134,6 +137,8 @@ export default {
         return {
             currentTab: 'bookings',
             filter: 'all',
+            userClients: [],
+            bookings: [],
             journals: []
         }
     },
@@ -157,7 +162,7 @@ export default {
                 const response = await axios.delete(`/clients/${this.getClientId}/bookings/${booking.id}`);
 
                 if (response.status === 200) {
-                    this.client.bookings = this.client.bookings.filter(clientBooking => clientBooking.id !== booking.id)
+                    this.bookings = this.bookings.filter(clientBooking => clientBooking.id !== booking.id)
 
                     alert('Booking was successfully deleted!')
                 }

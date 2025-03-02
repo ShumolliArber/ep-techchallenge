@@ -2136,11 +2136,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientShow',
   props: ['client'],
+  mounted: function mounted() {
+    this.bookings = this.client.bookings;
+  },
   computed: {
     getClientId: function getClientId() {
       return "".concat(location.pathname.split('/')[2]);
@@ -2150,6 +2152,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       currentTab: 'bookings',
       filter: 'all',
+      userClients: [],
+      bookings: [],
       journals: []
     };
   },
@@ -2184,7 +2188,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status === 200) {
-                  _this2.client.bookings = _this2.client.bookings.filter(function (clientBooking) {
+                  _this2.bookings = _this2.bookings.filter(function (clientBooking) {
                     return clientBooking.id !== booking.id;
                   });
                   alert('Booking was successfully deleted!');
@@ -2427,7 +2431,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-//
 //
 //
 //
@@ -39278,14 +39281,14 @@ var render = function() {
                   )
                 ]),
                 _vm._v(" "),
-                _vm.client.bookings && _vm.client.bookings.length > 0
+                _vm.bookings && _vm.bookings.length > 0
                   ? [
                       _c("table", [
                         _vm._m(0),
                         _vm._v(" "),
                         _c(
                           "tbody",
-                          _vm._l(_vm.client.bookings, function(booking) {
+                          _vm._l(_vm.bookings, function(booking) {
                             return _c("tr", { key: booking.id }, [
                               _c("td", [
                                 _vm._v(

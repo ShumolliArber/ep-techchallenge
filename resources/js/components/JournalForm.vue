@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1 class="mb-6">Clients -> Add New Journal</h1>
-
         <div class="max-w-lg mx-auto">
             <div class="form-group">
                 <label for="text">Text</label>
