@@ -24,31 +24,31 @@ class ClientController extends Controller
 
     public function show(Request $request, Client $client)
     {
-        $clientWithBookings = $client->load(['bookings']);
+        $clientWithBookings = $client->getClientsWithBookings();
 
-        if ($request->ajax()) {
-            $filter = $request->get('filter');
-
-            if ($filter === 'future') {
-                $clientWithBookings = $client->load([
-                    'bookings' => function ($query) {
-                        $query->where('start', '>', now());
-                    }
-                ]);
-            }
-
-            if ($filter === 'past') {
-                $clientWithBookings = $client->load([
-                    'bookings' => function ($query) {
-                        $query->where('end', '<', now());
-                    }
-                ]);
-            }
-
-            return response()->json($clientWithBookings);
+        if (!$request->ajax()) {
+            return view('clients.show', ['client' => $clientWithBookings]);
         }
 
-        return view('clients.show', ['client' => $clientWithBookings]);
+        $filter = $request->get('filter');
+
+        if ($filter === 'future') {
+            $clientWithBookings = $client->load([
+                'bookings' => function ($query) {
+                    $query->where('start', '>', now());
+                }
+            ]);
+        }
+
+        if ($filter === 'past') {
+            $clientWithBookings = $client->load([
+                'bookings' => function ($query) {
+                    $query->where('end', '<', now());
+                }
+            ]);
+        }
+
+        return response()->json($clientWithBookings);
     }
 
     public function store(ClientRequest $request): Client

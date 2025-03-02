@@ -2187,9 +2187,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.client.bookings = _this2.client.bookings.filter(function (clientBooking) {
                     return clientBooking.id !== booking.id;
                   });
-                  console.log(_this2.client.bookings.filter(function (clientBooking) {
-                    return clientBooking.id !== booking.id;
-                  }));
                   alert('Booking was successfully deleted!');
                 }
 

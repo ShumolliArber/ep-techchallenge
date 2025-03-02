@@ -33,7 +33,7 @@ class JournalController extends Controller
             'text' => $request->text,
         ]);
 
-        return view('clients.show', ['client' => $client->load(['bookings'])]);
+        return view('clients.show', ['client' => $client->getClientsWithBookings()]);
     }
 
     public function destroy(Client $client, Journal $journal): JsonResponse

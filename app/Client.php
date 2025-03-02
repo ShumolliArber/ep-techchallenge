@@ -32,4 +32,9 @@ class Client extends Model
     {
         return $this->hasMany(Journal::class);
     }
+
+    public function getClientsWithBookings(): Client
+    {
+        return $this->load(['bookings']);
+    }
 }

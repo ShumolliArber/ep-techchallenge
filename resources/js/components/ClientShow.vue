@@ -159,8 +159,6 @@ export default {
                 if (response.status === 200) {
                     this.client.bookings = this.client.bookings.filter(clientBooking => clientBooking.id !== booking.id)
 
-                    console.log(this.client.bookings.filter(clientBooking => clientBooking.id !== booking.id))
-
                     alert('Booking was successfully deleted!')
                 }
             } catch (error) {
