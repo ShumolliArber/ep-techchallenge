@@ -15,7 +15,7 @@ class UpdateClientsTableAddUserIdColumn extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->foreignId('user_id')->after('id')->constrained()->onDelete('cascade'); // Ensure each client belongs to a user
+            $table->foreignId('user_id')->after('id')->constrained()->onDelete('cascade');
         });
     }
 
