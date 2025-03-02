@@ -2341,7 +2341,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientsList',
+  mounted: function mounted() {
+    this.userClients = JSON.parse(JSON.stringify(this.clients));
+  },
   props: ['clients'],
+  data: function data() {
+    return {
+      userClients: {}
+    };
+  },
   methods: {
     deleteClient: function deleteClient(client) {
       var _this = this;
@@ -2360,7 +2368,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 response = _context.sent;
 
                 if (response.status === 200) {
-                  _this.clients = _this.clients.filter(function (userClient) {
+                  _this.userClients = _this.userClients.filter(function (userClient) {
                     return userClient.id !== client.id;
                   });
                   alert('Client was successfully deleted!');
@@ -2457,6 +2465,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ClientForm',
+  props: ['journals'],
   computed: {
     getClientId: function getClientId() {
       return "".concat(location.pathname.split('/')[2]);
@@ -39463,7 +39472,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "tbody",
-        _vm._l(_vm.clients, function(client) {
+        _vm._l(_vm.userClients, function(client) {
           return _c("tr", { key: client.id }, [
             _c("td", [_vm._v(_vm._s(client.name))]),
             _vm._v(" "),

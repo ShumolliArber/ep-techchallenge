@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\Http\Requests\ClientRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -51,15 +52,19 @@ class ClientController extends Controller
         return response()->json($clientWithBookings);
     }
 
-    public function store(ClientRequest $request): Client
+    public function store(ClientRequest $request): JsonResponse
     {
-        return auth()->user()->clients()->create([
+        $client = auth()->user()->clients()->create([
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'phone' => $request->get('phone'),
             'address' => $request->get('address'),
             'city' => $request->get('city'),
             'postcode' => $request->get('postcode'),
+        ]);
+
+        return response()->json([
+            'url' => "/clients/" . $client->id
         ]);
     }
 

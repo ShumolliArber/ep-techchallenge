@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="client in clients" :key="client.id">
+                <tr v-for="client in userClients" :key="client.id">
                     <td>{{ client.name }}</td>
                     <td>{{ client.email }}</td>
                     <td>{{ client.phone }}</td>
@@ -37,7 +37,17 @@ import axios from 'axios';
 export default {
     name: 'ClientsList',
 
+    mounted() {
+        this.userClients = JSON.parse(JSON.stringify(this.clients));
+    },
+
     props: ['clients'],
+
+    data() {
+        return {
+            userClients: {}
+        }
+    },
 
     methods: {
         async deleteClient(client) {
@@ -45,7 +55,7 @@ export default {
                 const response = await axios.delete(`/clients/${client.id}`);
 
                 if (response.status === 200) {
-                    this.clients = this.clients.filter(userClient => userClient.id !== client.id)
+                    this.userClients = this.userClients.filter(userClient => userClient.id !== client.id)
 
                     alert('Client was successfully deleted!')
                 }

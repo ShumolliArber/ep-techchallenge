@@ -27,6 +27,8 @@ import axios from 'axios';
 export default {
     name: 'ClientForm',
 
+    props: ['journals'],
+
     computed: {
         getClientId() {
             return `${location.pathname.split('/')[2]}`

@@ -25,7 +25,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:190',
-            'email' => 'nullable|email:strict,dns,filter|required_without:phone',
+            'email' => 'nullable|email:strict,dns,filter|unique:clients|required_without:phone',
             'phone' => 'nullable|regex:/^[\d\s\+]+$/|required_without:email',
         ];
     }
